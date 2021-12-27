@@ -41,12 +41,12 @@
                 }
                 else
                 {
-                    <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(() => PagerButtonClicked(1))"><span aria-hidden="true">@FirstText</span><span class="sr-only">Go to first page</span></a></li>
+                    <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(async () => await PagerButtonClicked(1))"><span aria-hidden="true">@FirstText</span><span class="sr-only">Go to first page</span></a></li>
                 }
             }
             @if (hasPrevious)
             {
-                <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(() => PagerButtonClicked(CurrentPage - 1))"><span aria-hidden="true">@PreviousText</span><span class="sr-only">Go to previous page</span></a></li>
+                <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(async () => await PagerButtonClicked(CurrentPage - 1))"><span aria-hidden="true">@PreviousText</span><span class="sr-only">Go to previous page</span></a></li>
             }
             else
             {
@@ -63,13 +63,13 @@
                     }
                     else
                     {
-                        <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(() => PagerButtonClicked(currentIndex))">@currentIndex</a></li>
+                        <li class="page-item noselect"><a class="page-link sort-link" @onclick="@(async () => await PagerButtonClicked(currentIndex))">@currentIndex</a></li>
                     }
                 }
             }
             @if (hasNext)
             {
-                <li class="page-item"><a class="page-link sort-link" @onclick="@(() => PagerButtonClicked(CurrentPage + 1))"><span aria-hidden="true">@NextText</span><span class="sr-only">Go to next page</span></a></li>
+                <li class="page-item"><a class="page-link sort-link" @onclick="@(async () => await PagerButtonClicked(CurrentPage + 1))"><span aria-hidden="true">@NextText</span><span class="sr-only">Go to next page</span></a></li>
             }
             else
             {
@@ -83,7 +83,7 @@
                 }
                 else
                 {
-                    <li class="page-item"><a class="page-link sort-link" @onclick="@(() => PagerButtonClicked(PageCount))"><span aria-hidden="true">@LastText</span><span class="sr-only">Go to last page</span></a></li>
+                    <li class="page-item"><a class="page-link sort-link" @onclick="@(async () => await PagerButtonClicked(PageCount))"><span aria-hidden="true">@LastText</span><span class="sr-only">Go to last page</span></a></li>
                 }
             }
         </ul>
@@ -96,7 +96,7 @@
 
     [Parameter] public int CurrentPage { get; set; }
 
-    [Parameter] public Func<int, Task> OnPageChanged { get; set; } = null;
+    [Parameter] public EventCallback<int> OnPageChanged { get; set; }
 
     [Parameter] public bool ShowFirstLast { get; set; } = false;
 
@@ -116,8 +116,8 @@
 
     [Parameter] public int VisiblePages { get; set; } = 5;
 
-    private void PagerButtonClicked(int page)
+    private Task PagerButtonClicked(int page)
     {
-        OnPageChanged?.Invoke(page);
+        return OnPageChanged.InvokeAsync(page);
     }
 }
