@@ -1,7 +1,12 @@
 ﻿<style>
     .sort-link {
         cursor: pointer;
-        color: #007bff !important;
+        color: @Color !important;
+    }
+
+    .page-item.active .page-link {
+        background-color: @ActiveColor !important;
+        border-color: @ActiveColor !important;
     }
 
     .noselect {
@@ -104,6 +109,10 @@
     [Parameter] public string PreviousText { get; set; } = "Previous";
 
     [Parameter] public string NextText { get; set; } = "Next";
+
+    [Parameter] public string Color { get; set; } = "#007bff";
+
+    [Parameter] public string ActiveColor { get; set; } = "#0d6efd";
 
     [Parameter] public int VisiblePages { get; set; } = 5;
 
